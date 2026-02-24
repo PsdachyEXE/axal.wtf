@@ -43,18 +43,31 @@ export default function Footer() {
           axal.wtf
         </span>
 
-        {/* Right: copyright */}
-        <span
-          style={{
-            fontFamily: 'DM Mono, monospace',
-            fontSize: '11px',
-            fontWeight: 300,
-            color: '#2a2a2a',
-            letterSpacing: '0.04em',
-          }}
-        >
-          © 2025 AXAL
-        </span>
+        {/* Right: copyright + credits */}
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '4px' }}>
+          <span
+            style={{
+              fontFamily: 'DM Mono, monospace',
+              fontSize: '11px',
+              fontWeight: 300,
+              color: '#2a2a2a',
+              letterSpacing: '0.04em',
+            }}
+          >
+            © 2025 AXAL
+          </span>
+          <span
+            style={{
+              fontFamily: 'DM Mono, monospace',
+              fontSize: '10px',
+              fontWeight: 300,
+              color: '#2a2a2a',
+              letterSpacing: '0.04em',
+            }}
+          >
+            Made by: Syntax, aflaefl
+          </span>
+        </div>
       </div>
     </footer>
   )
