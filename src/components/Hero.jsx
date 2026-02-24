@@ -1,59 +1,4 @@
 import { useRef, useEffect } from 'react'
-import { Canvas, useFrame } from '@react-three/fiber'
-import { OrbitControls } from '@react-three/drei'
-
-function RotatingIcosahedron() {
-  const meshRef = useRef()
-
-  useFrame((state, delta) => {
-    if (meshRef.current) {
-      meshRef.current.rotation.x += delta * 0.18
-      meshRef.current.rotation.y += delta * 0.28
-    }
-  })
-
-  return (
-    <mesh ref={meshRef}>
-      <icosahedronGeometry args={[1.6, 0]} />
-      <meshStandardMaterial
-        color="#2a2a2a"
-        wireframe={false}
-        roughness={0.8}
-        metalness={0.2}
-      />
-    </mesh>
-  )
-}
-
-function WireframeIcosahedron() {
-  const meshRef = useRef()
-
-  useFrame((state, delta) => {
-    if (meshRef.current) {
-      meshRef.current.rotation.x += delta * 0.18
-      meshRef.current.rotation.y += delta * 0.28
-    }
-  })
-
-  return (
-    <mesh ref={meshRef}>
-      <icosahedronGeometry args={[1.6, 0]} />
-      <meshBasicMaterial color="#555555" wireframe={true} />
-    </mesh>
-  )
-}
-
-function Scene() {
-  return (
-    <>
-      <ambientLight intensity={0.3} color="#ffffff" />
-      <directionalLight position={[5, 5, 5]} intensity={0.5} color="#aaaaaa" />
-      <directionalLight position={[-3, -3, -3]} intensity={0.15} color="#555555" />
-      <RotatingIcosahedron />
-      <WireframeIcosahedron />
-    </>
-  )
-}
 
 function FadeInSection({ children, delay = 0 }) {
   const ref = useRef()
@@ -169,7 +114,7 @@ export default function Hero() {
                 marginBottom: '48px',
               }}
             >
-              Made by gamers, for gamers. 
+              C:\Gays 
             </p>
           </FadeInSection>
 
@@ -217,29 +162,26 @@ export default function Hero() {
           </FadeInSection>
         </div>
 
-        {/* Right: Three.js Canvas */}
+        {/* Right: Hero GIF */}
         <FadeInSection delay={0.4}>
           <div
             style={{
               width: '100%',
-              aspectRatio: '1 / 1',
               maxWidth: '480px',
               marginLeft: 'auto',
               position: 'relative',
             }}
             className="three-canvas"
           >
-            <Canvas
-              camera={{ position: [0, 0, 5], fov: 45 }}
+            <img
+              src="/hero.gif"
+              alt=""
               style={{
                 width: '100%',
-                height: '100%',
-                background: 'transparent',
+                height: 'auto',
+                display: 'block',
               }}
-              gl={{ alpha: true, antialias: true }}
-            >
-              <Scene />
-            </Canvas>
+            />
           </div>
         </FadeInSection>
       </div>
