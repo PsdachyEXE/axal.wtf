@@ -1,17 +1,11 @@
-import { useRef, useMemo, Suspense } from 'react'
-import { Canvas, useFrame, useLoader } from '@react-three/fiber'
+import { useMemo, Suspense } from 'react'
+import { Canvas, useLoader } from '@react-three/fiber'
+import { OrbitControls } from '@react-three/drei'
 import { SVGLoader } from 'three/examples/jsm/loaders/SVGLoader.js'
 import * as THREE from 'three'
 
 function LogoMesh() {
-  const groupRef = useRef()
   const svgData = useLoader(SVGLoader, '/logo.svg')
-
-  useFrame((_, delta) => {
-    if (groupRef.current) {
-      groupRef.current.rotation.y += delta * 0.5
-    }
-  })
 
   const { geometry, scale: geoScale } = useMemo(() => {
     const allShapes = []
@@ -19,21 +13,17 @@ function LogoMesh() {
       SVGLoader.createShapes(path).forEach((shape) => allShapes.push(shape))
     })
 
-    const extrudeSettings = {
+    const geometry = new THREE.ExtrudeGeometry(allShapes, {
       depth: 18,
       bevelEnabled: false,
-    }
-
-    const geometry = new THREE.ExtrudeGeometry(allShapes, extrudeSettings)
+    })
 
     // Flip Y axis — SVG Y is down, Three.js Y is up
     geometry.applyMatrix4(new THREE.Matrix4().makeScale(1, -1, 1))
 
-    // Center the geometry
+    // Center and normalize
     geometry.computeBoundingBox()
     geometry.center()
-
-    // Calculate scale to normalize to ~3 units wide
     const size = new THREE.Vector3()
     geometry.boundingBox.getSize(size)
     const scale = 3 / Math.max(size.x, size.y)
@@ -42,30 +32,20 @@ function LogoMesh() {
   }, [svgData])
 
   return (
-    <group ref={groupRef} scale={geoScale}>
+    <group scale={geoScale}>
       <mesh geometry={geometry}>
-        <meshStandardMaterial
-          color="#ffffff"
-          roughness={0.25}
-          metalness={0.05}
-          side={THREE.DoubleSide}
-        />
+        {/* MeshBasicMaterial: flat colour, zero lighting artifacts */}
+        <meshBasicMaterial color="#e8e8e8" side={THREE.DoubleSide} />
       </mesh>
     </group>
   )
 }
 
 function Fallback() {
-  const ref = useRef()
-  useFrame((_, delta) => {
-    if (ref.current) {
-      ref.current.rotation.y += delta * 0.5
-    }
-  })
   return (
-    <mesh ref={ref}>
+    <mesh>
       <torusGeometry args={[1.2, 0.3, 16, 64]} />
-      <meshStandardMaterial color="#555555" roughness={0.8} />
+      <meshBasicMaterial color="#555555" />
     </mesh>
   )
 }
@@ -77,9 +57,14 @@ export default function LogoModel() {
       style={{ width: '100%', height: '100%', background: 'transparent' }}
       gl={{ alpha: true, antialias: true }}
     >
-      <ambientLight intensity={0.6} color="#ffffff" />
-      <directionalLight position={[4, 4, 4]} intensity={1.0} color="#ffffff" />
-      <directionalLight position={[-4, -2, 2]} intensity={0.3} color="#aaaaaa" />
+      <OrbitControls
+        autoRotate
+        autoRotateSpeed={8}
+        enableZoom={false}
+        enablePan={false}
+        minPolarAngle={Math.PI * 0.25}
+        maxPolarAngle={Math.PI * 0.75}
+      />
 
       <Suspense fallback={<Fallback />}>
         <LogoMesh />
