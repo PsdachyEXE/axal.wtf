@@ -169,8 +169,7 @@ export default function Hero() {
                 marginBottom: '48px',
               }}
             >
-              Professional-grade scripts and tooling for game developers.
-              Built for speed, precision, and production pipelines.
+              Made by gamers, for gamers. 
             </p>
           </FadeInSection>
 

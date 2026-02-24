@@ -33,9 +33,9 @@ function useScrollFadeIn(threshold = 0.1) {
 const mockDonations = [
   {
     id: 1,
-    name: 'xX_devlord_Xx',
-    amount: '€15.00',
-    message: 'keep the tools coming, absolute lifesaver',
+    name: 'Orange451',
+    amount: '€67.00',
+    message: 'I work for the mossad',
     time: '2m ago',
   },
   {
@@ -47,9 +47,9 @@ const mockDonations = [
   },
   {
     id: 3,
-    name: 'kira.dev',
-    amount: '€25.00',
-    message: 'Aftermath saved my entire workflow, worth every cent',
+    name: 'CompillerError',
+    amount: '€41.00',
+    message: 'Aftermath is nothing without Axal',
     time: '1h ago',
   },
   {
@@ -61,17 +61,17 @@ const mockDonations = [
   },
   {
     id: 5,
-    name: 'null_sector',
+    name: 'The big Yahoo',
     amount: '€15.00',
-    message: 'Project Delta is 🔥 — more updates please',
+    message: 'Project Delta script makes me want to bomb the Pentagon',
     time: '5h ago',
   },
 ]
 
 const mockTopDonors = [
-  { rank: 1, name: 'kira.dev', total: '€148.00' },
-  { rank: 2, name: 'null_sector', total: '€97.00' },
-  { rank: 3, name: 'xX_devlord_Xx', total: '€63.00' },
+  { rank: 1, name: 'Orange451', total: '€148.00' },
+  { rank: 2, name: 'Anonymous', total: '€97.00' },
+  { rank: 3, name: 'The big Yahoo', total: '€63.00' },
 ]
 
 function PulsingDot() {
