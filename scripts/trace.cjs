@@ -9,8 +9,8 @@ potrace.trace(inputFile, {
   blackOnWhite: false,
   threshold: 180,
   turdSize: 2,
-  alphaMax: 1,
-  optTolerance: 0.1,
+  alphaMax: 0,       // 0 = all corners forced sharp (no rounding)
+  optCurve: false,   // disable Bezier fitting → output only M/L/Z (straight lines)
 }, (err, svg) => {
   if (err) { console.error('Error:', err); process.exit(1); }
   fs.writeFileSync(outputFile, svg);

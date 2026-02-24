@@ -1,14 +1,11 @@
-import { useMemo, useRef, Suspense } from 'react'
-import { Canvas, useLoader, useFrame } from '@react-three/fiber'
+import { useMemo, Suspense } from 'react'
+import { Canvas, useLoader } from '@react-three/fiber'
+import { OrbitControls } from '@react-three/drei'
 import { SVGLoader } from 'three/examples/jsm/loaders/SVGLoader.js'
 import * as THREE from 'three'
 
-// Shared interaction refs are passed down from the DOM wrapper so that
-// raycasting holes in the logo never break the drag.
-function LogoMesh({ isDragging, extraRot }) {
+function LogoMesh() {
   const svgData = useLoader(SVGLoader, '/logo.svg')
-  const groupRef = useRef()
-  const autoAngle = useRef(0)
 
   const { geometry, geoScale } = useMemo(() => {
     const allShapes = []
@@ -16,7 +13,7 @@ function LogoMesh({ isDragging, extraRot }) {
       SVGLoader.createShapes(path).forEach((shape) => allShapes.push(shape))
     })
 
-    // --- Step 1: compute 2-D bounding box to get the normalisation scale ---
+    // Compute 2-D bounding box for normalisation scale
     const tempGeo = new THREE.ShapeGeometry(allShapes)
     tempGeo.computeBoundingBox()
     const tmpSize = new THREE.Vector3()
@@ -24,20 +21,18 @@ function LogoMesh({ isDragging, extraRot }) {
     tempGeo.dispose()
 
     const maxDim = Math.max(tmpSize.x, tmpSize.y)
-    const geoScale = 3 / maxDim           // logo will be 3 world-units wide
+    const geoScale = 3 / maxDim           // logo = 3 world-units wide
 
-    // --- Step 2: set depth in SVG-space so it maps to a fixed world depth ---
-    // 0.55 world units → solid and chunky, no z-fighting between cap faces
+    // Proportional depth → solid, no z-fighting between cap faces
     const svgDepth = 0.55 / geoScale
 
-    // --- Step 3: extrude ---
+    // SVG is now straight-line only (optCurve:false) so curveSegments:1 is fine
     const geometry = new THREE.ExtrudeGeometry(allShapes, {
       depth: svgDepth,
       bevelEnabled: false,
-      curveSegments: 64,     // 64 segments per arc → smooth circles/curves
+      curveSegments: 1,
     })
 
-    // SVG Y-axis is inverted vs Three.js
     geometry.applyMatrix4(new THREE.Matrix4().makeScale(1, -1, 1))
     geometry.computeBoundingBox()
     geometry.center()
@@ -45,21 +40,8 @@ function LogoMesh({ isDragging, extraRot }) {
     return { geometry, geoScale }
   }, [svgData])
 
-  useFrame((_, delta) => {
-    if (!groupRef.current) return
-    // Auto-rotation always ticks — never pauses
-    autoAngle.current += delta * 1.5
-    // When not dragging, spring drag offset back to 0
-    if (!isDragging.current) {
-      extraRot.current.x *= 0.88
-      extraRot.current.y *= 0.88
-    }
-    groupRef.current.rotation.y = autoAngle.current + extraRot.current.y
-    groupRef.current.rotation.x = extraRot.current.x
-  })
-
   return (
-    <group ref={groupRef} scale={geoScale}>
+    <group scale={geoScale}>
       <mesh geometry={geometry}>
         <meshBasicMaterial color="#e8e8e8" side={THREE.DoubleSide} />
       </mesh>
@@ -77,56 +59,26 @@ function Fallback() {
 }
 
 export default function LogoModel() {
-  // All interaction lives on the DOM div — not inside R3F — so that:
-  //   • setPointerCapture locks events to this element for the whole drag
-  //   • moving over logo holes / empty space never drops the drag
-  const isDragging = useRef(false)
-  const lastPointer = useRef({ x: 0, y: 0 })
-  const extraRot = useRef({ x: 0, y: 0 })
-
   return (
-    <div
-      style={{
-        width: '100%',
-        height: '100%',
-        cursor: 'grab',
-        touchAction: 'none',   // prevent mobile scroll hijacking the drag
-        userSelect: 'none',
-      }}
-      onPointerDown={(e) => {
-        // Capture: all subsequent pointer events come here until pointerup
-        e.currentTarget.setPointerCapture(e.pointerId)
-        isDragging.current = true
-        lastPointer.current = { x: e.clientX, y: e.clientY }
-        e.currentTarget.style.cursor = 'grabbing'
-      }}
-      onPointerMove={(e) => {
-        if (!isDragging.current) return
-        const dx = e.clientX - lastPointer.current.x
-        const dy = e.clientY - lastPointer.current.y
-        extraRot.current.y += dx * 0.012
-        extraRot.current.x += dy * 0.012
-        // Clamp vertical tilt — can't go fully upside-down
-        extraRot.current.x = Math.max(-1.1, Math.min(1.1, extraRot.current.x))
-        lastPointer.current = { x: e.clientX, y: e.clientY }
-      }}
-      onPointerUp={(e) => {
-        isDragging.current = false
-        e.currentTarget.style.cursor = 'grab'
-      }}
-      onPointerCancel={() => {
-        isDragging.current = false
-      }}
+    <Canvas
+      camera={{ position: [0, 0, 6], fov: 45 }}
+      style={{ width: '100%', height: '100%', background: 'transparent' }}
+      gl={{ alpha: true, antialias: true }}
     >
-      <Canvas
-        camera={{ position: [0, 0, 6], fov: 45 }}
-        style={{ width: '100%', height: '100%', background: 'transparent' }}
-        gl={{ alpha: true, antialias: true }}
-      >
-        <Suspense fallback={<Fallback />}>
-          <LogoMesh isDragging={isDragging} extraRot={extraRot} />
-        </Suspense>
-      </Canvas>
-    </div>
+      <Suspense fallback={<Fallback />}>
+        <LogoMesh />
+      </Suspense>
+
+      <OrbitControls
+        autoRotate
+        autoRotateSpeed={5}
+        enableDamping
+        dampingFactor={0.06}
+        enableZoom={false}
+        enablePan={false}
+        minPolarAngle={Math.PI / 2 - 1.1}
+        maxPolarAngle={Math.PI / 2 + 1.1}
+      />
+    </Canvas>
   )
 }
