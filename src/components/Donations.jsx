@@ -1,0 +1,355 @@
+import { useRef, useEffect } from 'react'
+
+function useScrollFadeIn(threshold = 0.1) {
+  const ref = useRef()
+
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+
+    el.style.opacity = '0'
+    el.style.transform = 'translateY(24px)'
+    el.style.transition = 'opacity 0.6s ease, transform 0.6s ease'
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          el.style.opacity = '1'
+          el.style.transform = 'translateY(0)'
+          observer.disconnect()
+        }
+      },
+      { threshold }
+    )
+
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [threshold])
+
+  return ref
+}
+
+// Mock static data — replace with WebSocket/SSE endpoint
+const mockDonations = [
+  {
+    id: 1,
+    name: 'xX_devlord_Xx',
+    amount: '€15.00',
+    message: 'keep the tools coming, absolute lifesaver',
+    time: '2m ago',
+  },
+  {
+    id: 2,
+    name: 'Anonymous',
+    amount: '€7.00',
+    message: null,
+    time: '18m ago',
+  },
+  {
+    id: 3,
+    name: 'kira.dev',
+    amount: '€25.00',
+    message: 'Aftermath saved my entire workflow, worth every cent',
+    time: '1h ago',
+  },
+  {
+    id: 4,
+    name: 'Anonymous',
+    amount: '€7.00',
+    message: null,
+    time: '3h ago',
+  },
+  {
+    id: 5,
+    name: 'null_sector',
+    amount: '€15.00',
+    message: 'Project Delta is 🔥 — more updates please',
+    time: '5h ago',
+  },
+]
+
+const mockTopDonors = [
+  { rank: 1, name: 'kira.dev', total: '€148.00' },
+  { rank: 2, name: 'null_sector', total: '€97.00' },
+  { rank: 3, name: 'xX_devlord_Xx', total: '€63.00' },
+]
+
+function PulsingDot() {
+  return (
+    <span style={{ position: 'relative', display: 'inline-block', width: '8px', height: '8px' }}>
+      <span
+        style={{
+          position: 'absolute',
+          inset: 0,
+          borderRadius: '50%',
+          background: '#22c55e',
+          animation: 'ping 1.4s cubic-bezier(0, 0, 0.2, 1) infinite',
+        }}
+      />
+      <span
+        style={{
+          position: 'relative',
+          display: 'block',
+          width: '8px',
+          height: '8px',
+          borderRadius: '50%',
+          background: '#22c55e',
+        }}
+      />
+    </span>
+  )
+}
+
+function DonationRow({ donation, isLast }) {
+  return (
+    <div
+      style={{
+        display: 'grid',
+        gridTemplateColumns: '1fr auto auto',
+        gap: '16px',
+        alignItems: 'start',
+        padding: '16px 0',
+        borderBottom: isLast ? 'none' : '1px solid #1e1e1e',
+      }}
+    >
+      {/* Left: name + message */}
+      <div>
+        <div
+          style={{
+            fontFamily: 'DM Mono, monospace',
+            fontSize: '13px',
+            fontWeight: 500,
+            color: '#e8e8e8',
+            marginBottom: donation.message ? '4px' : 0,
+          }}
+        >
+          {donation.name}
+        </div>
+        {donation.message && (
+          <div
+            style={{
+              fontFamily: 'DM Mono, monospace',
+              fontSize: '11px',
+              color: '#555555',
+              fontWeight: 300,
+              lineHeight: 1.5,
+            }}
+          >
+            "{donation.message}"
+          </div>
+        )}
+      </div>
+
+      {/* Center: amount */}
+      <div
+        style={{
+          fontFamily: 'Syne, sans-serif',
+          fontWeight: 700,
+          fontSize: '15px',
+          color: '#e8e8e8',
+          whiteSpace: 'nowrap',
+        }}
+      >
+        {donation.amount}
+      </div>
+
+      {/* Right: time */}
+      <div
+        style={{
+          fontFamily: 'DM Mono, monospace',
+          fontSize: '11px',
+          color: '#555555',
+          fontWeight: 300,
+          whiteSpace: 'nowrap',
+        }}
+      >
+        {donation.time}
+      </div>
+    </div>
+  )
+}
+
+export default function Donations() {
+  const headerRef = useScrollFadeIn()
+  const feedRef = useScrollFadeIn()
+  const leaderboardRef = useScrollFadeIn()
+
+  return (
+    <section
+      id="donations"
+      style={{
+        padding: '100px 24px',
+        borderTop: '1px solid #1e1e1e',
+        background: 'rgba(255,255,255,0.005)',
+      }}
+    >
+      <style>{`
+        @keyframes ping {
+          75%, 100% { transform: scale(2); opacity: 0; }
+        }
+      `}</style>
+
+      <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+        {/* Section header */}
+        <div ref={headerRef} style={{ marginBottom: '48px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '4px' }}>
+            <div
+              style={{
+                fontFamily: 'DM Mono, monospace',
+                fontSize: '12px',
+                fontWeight: 500,
+                color: '#555555',
+                letterSpacing: '0.15em',
+              }}
+            >
+              // DONATIONS
+            </div>
+            {/* Live indicator */}
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+                border: '1px solid #1e1e1e',
+                padding: '3px 10px',
+              }}
+            >
+              <PulsingDot />
+              <span
+                style={{
+                  fontFamily: 'DM Mono, monospace',
+                  fontSize: '10px',
+                  fontWeight: 500,
+                  color: '#22c55e',
+                  letterSpacing: '0.12em',
+                }}
+              >
+                LIVE
+              </span>
+            </div>
+          </div>
+          <div
+            style={{
+              fontFamily: 'DM Mono, monospace',
+              fontSize: '10px',
+              color: '#2a2a2a',
+              marginTop: '8px',
+              letterSpacing: '0.06em',
+            }}
+          >
+            {/* Note for backend dev */}
+            {/* TODO: Wire to WebSocket or SSE endpoint to replace mock data */}
+          </div>
+          <div
+            style={{
+              width: '48px',
+              height: '1px',
+              background: '#2a2a2a',
+              marginTop: '12px',
+            }}
+          />
+        </div>
+
+        {/* Two-column layout */}
+        <div
+          className="donations-grid"
+          style={{
+            display: 'grid',
+            gridTemplateColumns: '1fr 320px',
+            gap: '48px',
+            alignItems: 'start',
+          }}
+        >
+          {/* Donation feed */}
+          <div ref={feedRef}>
+            <div
+              style={{
+                fontFamily: 'DM Mono, monospace',
+                fontSize: '10px',
+                color: '#555555',
+                letterSpacing: '0.1em',
+                marginBottom: '4px',
+                textTransform: 'uppercase',
+              }}
+            >
+              Recent
+            </div>
+            <div style={{ borderTop: '1px solid #2a2a2a' }}>
+              {mockDonations.map((donation, i) => (
+                <DonationRow
+                  key={donation.id}
+                  donation={donation}
+                  isLast={i === mockDonations.length - 1}
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* Leaderboard */}
+          <div ref={leaderboardRef}>
+            <div
+              style={{
+                fontFamily: 'DM Mono, monospace',
+                fontSize: '10px',
+                color: '#555555',
+                letterSpacing: '0.1em',
+                marginBottom: '4px',
+                textTransform: 'uppercase',
+              }}
+            >
+              Top Donors
+            </div>
+            <div style={{ border: '1px solid #2a2a2a' }}>
+              {mockTopDonors.map((donor, i) => (
+                <div
+                  key={donor.rank}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    padding: '14px 16px',
+                    borderBottom: i < mockTopDonors.length - 1 ? '1px solid #1e1e1e' : 'none',
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <span
+                      style={{
+                        fontFamily: 'DM Mono, monospace',
+                        fontSize: '11px',
+                        color: '#2a2a2a',
+                        fontWeight: 500,
+                        width: '20px',
+                      }}
+                    >
+                      #{donor.rank}
+                    </span>
+                    <span
+                      style={{
+                        fontFamily: 'DM Mono, monospace',
+                        fontSize: '13px',
+                        color: i === 0 ? '#e8e8e8' : '#aaaaaa',
+                        fontWeight: i === 0 ? 500 : 400,
+                      }}
+                    >
+                      {donor.name}
+                    </span>
+                  </div>
+                  <span
+                    style={{
+                      fontFamily: 'Syne, sans-serif',
+                      fontWeight: 700,
+                      fontSize: '14px',
+                      color: i === 0 ? '#e8e8e8' : '#aaaaaa',
+                    }}
+                  >
+                    {donor.total}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
