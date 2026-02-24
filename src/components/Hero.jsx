@@ -1,4 +1,5 @@
 import { useRef, useEffect } from 'react'
+import LogoModel from './LogoModel'
 
 function FadeInSection({ children, delay = 0 }) {
   const ref = useRef()
@@ -82,7 +83,7 @@ export default function Hero() {
                 paddingLeft: '12px',
               }}
             >
-              // GAME DEV TOOLS
+              // PREMIUM SCRIPT
             </div>
           </FadeInSection>
 
@@ -162,26 +163,19 @@ export default function Hero() {
           </FadeInSection>
         </div>
 
-        {/* Right: Hero GIF */}
+        {/* Right: 3D Logo */}
         <FadeInSection delay={0.4}>
           <div
             style={{
               width: '100%',
+              aspectRatio: '1 / 1',
               maxWidth: '480px',
               marginLeft: 'auto',
               position: 'relative',
             }}
             className="three-canvas"
           >
-            <img
-              src="/hero.gif"
-              alt=""
-              style={{
-                width: '100%',
-                height: 'auto',
-                display: 'block',
-              }}
-            />
+            <LogoModel />
           </div>
         </FadeInSection>
       </div>
