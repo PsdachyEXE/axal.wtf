@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react'
+import { useRef, useEffect, useState } from 'react'
 
 function useScrollFadeIn(threshold = 0.1) {
   const ref = useRef()
@@ -169,10 +169,45 @@ function DonationRow({ donation, isLast }) {
   )
 }
 
+const PRESET_AMOUNTS = ['€5', '€10', '€15', '€25']
+
+const donationInputStyle = {
+  width: '100%',
+  background: '#111111',
+  border: '1px solid #2a2a2a',
+  color: '#e8e8e8',
+  fontFamily: 'DM Mono, monospace',
+  fontSize: '13px',
+  fontWeight: 400,
+  padding: '11px 14px',
+  outline: 'none',
+  transition: 'border-color 0.2s',
+  borderRadius: 0,
+  appearance: 'none',
+  WebkitAppearance: 'none',
+}
+
 export default function Donations() {
   const headerRef = useScrollFadeIn()
   const feedRef = useScrollFadeIn()
   const leaderboardRef = useScrollFadeIn()
+  const formRef = useScrollFadeIn()
+
+  const [donorName, setDonorName] = useState('')
+  const [amount, setAmount] = useState('')
+  const [message, setMessage] = useState('')
+  const [selectedPreset, setSelectedPreset] = useState(null)
+  const [focusedField, setFocusedField] = useState(null)
+
+  const handlePreset = (preset) => {
+    setSelectedPreset(preset)
+    setAmount(preset.replace('€', ''))
+  }
+
+  const focusStyle = (field) =>
+    focusedField === field
+      ? { ...donationInputStyle, borderColor: '#555555' }
+      : donationInputStyle
 
   return (
     <section
@@ -348,6 +383,234 @@ export default function Donations() {
               ))}
             </div>
           </div>
+        </div>
+
+        {/* Donation input form */}
+        <div
+          ref={formRef}
+          style={{
+            marginTop: '48px',
+            borderTop: '1px solid #1e1e1e',
+            paddingTop: '40px',
+          }}
+        >
+          <div style={{ marginBottom: '28px' }}>
+            <div
+              style={{
+                fontFamily: 'DM Mono, monospace',
+                fontSize: '12px',
+                fontWeight: 500,
+                color: '#555555',
+                letterSpacing: '0.15em',
+                marginBottom: '4px',
+              }}
+            >
+              // LEAVE A DONATION
+            </div>
+            <div
+              style={{
+                width: '48px',
+                height: '1px',
+                background: '#2a2a2a',
+                marginTop: '12px',
+              }}
+            />
+          </div>
+
+          <form
+            onSubmit={(e) => e.preventDefault()}
+            style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}
+          >
+            {/* Amount presets */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <label
+                style={{
+                  fontFamily: 'DM Mono, monospace',
+                  fontSize: '10px',
+                  fontWeight: 500,
+                  color: '#555555',
+                  letterSpacing: '0.12em',
+                  textTransform: 'uppercase',
+                }}
+              >
+                Amount
+              </label>
+              <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', alignItems: 'center' }}>
+                {PRESET_AMOUNTS.map((preset) => (
+                  <button
+                    key={preset}
+                    type="button"
+                    onClick={() => handlePreset(preset)}
+                    style={{
+                      fontFamily: 'DM Mono, monospace',
+                      fontSize: '12px',
+                      fontWeight: 500,
+                      color: selectedPreset === preset ? '#0a0a0a' : '#aaaaaa',
+                      background: selectedPreset === preset ? '#e8e8e8' : 'none',
+                      border: `1px solid ${selectedPreset === preset ? '#e8e8e8' : '#2a2a2a'}`,
+                      padding: '9px 18px',
+                      cursor: 'pointer',
+                      transition: 'all 0.15s',
+                      letterSpacing: '0.04em',
+                    }}
+                    onMouseEnter={(e) => {
+                      if (selectedPreset !== preset) {
+                        e.currentTarget.style.borderColor = '#555555'
+                        e.currentTarget.style.color = '#e8e8e8'
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (selectedPreset !== preset) {
+                        e.currentTarget.style.borderColor = '#2a2a2a'
+                        e.currentTarget.style.color = '#aaaaaa'
+                      }
+                    }}
+                  >
+                    {preset}
+                  </button>
+                ))}
+                <span
+                  style={{
+                    fontFamily: 'DM Mono, monospace',
+                    fontSize: '12px',
+                    color: '#555555',
+                    padding: '0 4px',
+                  }}
+                >
+                  or
+                </span>
+                <div style={{ position: 'relative', flex: '1', minWidth: '120px', maxWidth: '180px' }}>
+                  <span
+                    style={{
+                      position: 'absolute',
+                      left: '14px',
+                      top: '50%',
+                      transform: 'translateY(-50%)',
+                      fontFamily: 'DM Mono, monospace',
+                      fontSize: '13px',
+                      color: '#555555',
+                      pointerEvents: 'none',
+                    }}
+                  >
+                    €
+                  </span>
+                  <input
+                    type="number"
+                    min="1"
+                    step="0.01"
+                    placeholder="custom"
+                    value={amount}
+                    onChange={(e) => {
+                      setAmount(e.target.value)
+                      setSelectedPreset(null)
+                    }}
+                    style={{
+                      ...focusStyle('amount'),
+                      paddingLeft: '26px',
+                    }}
+                    onFocus={() => setFocusedField('amount')}
+                    onBlur={() => setFocusedField(null)}
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Name + Message in a row */}
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: '1fr 1fr',
+                gap: '16px',
+              }}
+              className="donate-fields"
+            >
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                <label
+                  style={{
+                    fontFamily: 'DM Mono, monospace',
+                    fontSize: '10px',
+                    fontWeight: 500,
+                    color: '#555555',
+                    letterSpacing: '0.12em',
+                    textTransform: 'uppercase',
+                  }}
+                >
+                  Name (optional)
+                </label>
+                <input
+                  type="text"
+                  placeholder="Anonymous"
+                  value={donorName}
+                  onChange={(e) => setDonorName(e.target.value)}
+                  style={focusStyle('name')}
+                  onFocus={() => setFocusedField('name')}
+                  onBlur={() => setFocusedField(null)}
+                />
+              </div>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                <label
+                  style={{
+                    fontFamily: 'DM Mono, monospace',
+                    fontSize: '10px',
+                    fontWeight: 500,
+                    color: '#555555',
+                    letterSpacing: '0.12em',
+                    textTransform: 'uppercase',
+                  }}
+                >
+                  Message (optional)
+                </label>
+                <input
+                  type="text"
+                  placeholder="say something..."
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                  style={focusStyle('message')}
+                  onFocus={() => setFocusedField('message')}
+                  onBlur={() => setFocusedField(null)}
+                />
+              </div>
+            </div>
+
+            {/* Submit */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '20px', flexWrap: 'wrap' }}>
+              <button
+                type="button"
+                style={{
+                  fontFamily: 'DM Mono, monospace',
+                  fontWeight: 500,
+                  fontSize: '13px',
+                  color: '#e8e8e8',
+                  background: 'none',
+                  border: '1px solid #555555',
+                  padding: '12px 28px',
+                  letterSpacing: '0.06em',
+                  cursor: 'pointer',
+                  transition: 'border-color 0.2s, color 0.2s',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = '#e8e8e8'
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = '#555555'
+                }}
+              >
+                Donate →
+              </button>
+              <span
+                style={{
+                  fontFamily: 'DM Mono, monospace',
+                  fontSize: '10px',
+                  fontWeight: 300,
+                  color: '#2a2a2a',
+                  letterSpacing: '0.04em',
+                }}
+              >
+                // payment processing not yet integrated
+              </span>
+            </div>
+          </form>
         </div>
       </div>
     </section>

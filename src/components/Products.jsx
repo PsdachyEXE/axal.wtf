@@ -29,7 +29,7 @@ function useScrollFadeIn(threshold = 0.15) {
   return ref
 }
 
-function TierRow({ period, price, badge }) {
+function TierRow({ period, price, badge, onGetAccess }) {
   return (
     <div
       style={{
@@ -81,34 +81,36 @@ function TierRow({ period, price, badge }) {
           </span>
         )}
       </div>
-      <a
-        href="#"
+      <button
+        type="button"
+        onClick={onGetAccess}
         style={{
           fontFamily: 'DM Mono, monospace',
           fontWeight: 500,
           fontSize: '12px',
           color: '#e8e8e8',
-          textDecoration: 'none',
+          background: 'none',
           letterSpacing: '0.05em',
           border: '1px solid #555555',
           padding: '8px 16px',
           transition: 'border-color 0.2s, color 0.2s',
           whiteSpace: 'nowrap',
+          cursor: 'pointer',
         }}
         onMouseEnter={(e) => {
-          e.target.style.borderColor = '#e8e8e8'
+          e.currentTarget.style.borderColor = '#e8e8e8'
         }}
         onMouseLeave={(e) => {
-          e.target.style.borderColor = '#555555'
+          e.currentTarget.style.borderColor = '#555555'
         }}
       >
         Get Access
-      </a>
+      </button>
     </div>
   )
 }
 
-function ProductCard({ name, delay = 0 }) {
+function ProductCard({ name, delay = 0, onGetAccess }) {
   const ref = useScrollFadeIn()
 
   return (
@@ -174,14 +176,23 @@ function ProductCard({ name, delay = 0 }) {
 
       {/* Pricing tiers */}
       <div>
-        <TierRow period="Monthly" price="€7/mo" />
-        <TierRow period="Lifetime" price="€15 one-time" badge="BEST VALUE" />
+        <TierRow
+          period="Monthly"
+          price="€7/mo"
+          onGetAccess={() => onGetAccess(name, 'Monthly', '€7')}
+        />
+        <TierRow
+          period="Lifetime"
+          price="€15 one-time"
+          badge="BEST VALUE"
+          onGetAccess={() => onGetAccess(name, 'Lifetime', '€15')}
+        />
       </div>
     </div>
   )
 }
 
-export default function Products() {
+export default function Products({ onGetAccess }) {
   const labelRef = useScrollFadeIn()
 
   return (
@@ -225,8 +236,8 @@ export default function Products() {
           flexWrap: 'wrap',
         }}
       >
-        <ProductCard name="Aftermath" delay={0} />
-        <ProductCard name="Project Delta" delay={0.1} />
+        <ProductCard name="Aftermath" delay={0} onGetAccess={onGetAccess} />
+        <ProductCard name="Project Delta" delay={0.1} onGetAccess={onGetAccess} />
       </div>
     </section>
   )

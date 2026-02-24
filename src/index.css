@@ -66,4 +66,7 @@
   .donations-grid {
     grid-template-columns: 1fr !important;
   }
+  .donate-fields {
+    grid-template-columns: 1fr !important;
+  }
 }
