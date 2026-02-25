@@ -26,11 +26,12 @@ function LogoMesh() {
     // Proportional depth → solid, no z-fighting between cap faces
     const svgDepth = 0.55 / geoScale
 
-    // SVG is now straight-line only (optCurve:false) so curveSegments:1 is fine
+    // SVG now has: smooth Bezier arcs (ring) + straight L commands (A legs)
+    // High curveSegments tessellates the ring arcs smoothly
     const geometry = new THREE.ExtrudeGeometry(allShapes, {
       depth: svgDepth,
       bevelEnabled: false,
-      curveSegments: 1,
+      curveSegments: 256,
     })
 
     geometry.applyMatrix4(new THREE.Matrix4().makeScale(1, -1, 1))
