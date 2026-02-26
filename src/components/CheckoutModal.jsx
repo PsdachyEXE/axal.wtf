@@ -260,7 +260,7 @@ export default function CheckoutModal({ product, tier, price, onClose }) {
                 textAlign: 'center',
               }}
             >
-              // payment processed via backend
+              // payment processed via ___
             </div>
           </form>
         )}

@@ -34,7 +34,7 @@ export default function Footer() {
               fontFamily: 'DM Mono, monospace',
               fontSize: '11px',
               fontWeight: 300,
-              color: '#2a2a2a',
+              color: '#e8e8e8',
               letterSpacing: '0.04em',
             }}
           >

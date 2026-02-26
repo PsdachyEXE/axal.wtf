@@ -467,7 +467,7 @@ export default function Donations() {
                     letterSpacing: '0.04em',
                   }}
                 >
-                  // payment processing via backend
+                  // Powered by ___
                 </span>
               </div>
             )}
