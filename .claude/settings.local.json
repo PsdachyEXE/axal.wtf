@@ -10,7 +10,18 @@
       "Bash(npm list:*)",
       "Bash(npm run build:*)",
       "Bash(git init:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git remote add:*)",
+      "Bash(git branch:*)",
+      "Bash(git push:*)",
+      "Bash(curl:*)",
+      "Bash(dir /s /b \"C:\\\\Coding\\\\axal.wtf\\\\*.png\")",
+      "Bash(\"C:/Coding/axal.wtf/scripts/trace.cjs\":*)",
+      "Bash(git checkout:*)",
+      "Bash(du -sh dist dist/assets/*)",
+      "Bash(vercel --prod)",
+      "Bash(xargs grep -l \"fetch\\\\|axios\\\\|XMLHttpRequest\\\\|fetch\\\\|api\\\\|API\")"
     ]
   }
 }

@@ -8,7 +8,7 @@ const mockDonations = [
     id: 1,
     name: 'Orange451',
     amount: '€67.00',
-    message: 'Keep up the amazing work!',
+    message: 'something',
     time: '2m ago',
   },
   {
@@ -22,7 +22,7 @@ const mockDonations = [
     id: 3,
     name: 'CompillerError',
     amount: '€41.00',
-    message: 'Aftermath is nothing without Axal',
+    message: 'something',
     time: '1h ago',
   },
   {
@@ -36,7 +36,7 @@ const mockDonations = [
     id: 5,
     name: 'The big Yahoo',
     amount: '€15.00',
-    message: 'Project Delta is exactly what I needed — thank you!',
+    message: 'something',
     time: '5h ago',
   },
 ]
