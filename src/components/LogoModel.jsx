@@ -1,8 +1,15 @@
-import { useMemo, Suspense } from 'react'
+import { useMemo, Suspense, memo } from 'react'
 import { Canvas, useLoader } from '@react-three/fiber'
 import { OrbitControls } from '@react-three/drei'
 import { SVGLoader } from 'three/examples/jsm/loaders/SVGLoader.js'
 import * as THREE from 'three'
+
+// Enable Three.js loader cache so re-mounts don't re-fetch
+THREE.Cache.enabled = true
+
+// Pre-warm: start loading the SVG as soon as this module is imported,
+// before the component ever mounts.
+useLoader.preload(SVGLoader, '/logo.svg')
 
 function LogoMesh() {
   const svgData = useLoader(SVGLoader, '/logo.svg')
@@ -31,7 +38,7 @@ function LogoMesh() {
     const geometry = new THREE.ExtrudeGeometry(allShapes, {
       depth: svgDepth,
       bevelEnabled: false,
-      curveSegments: 256,
+      curveSegments: 32,
     })
 
     geometry.applyMatrix4(new THREE.Matrix4().makeScale(1, -1, 1))
@@ -59,7 +66,7 @@ function Fallback() {
   )
 }
 
-export default function LogoModel() {
+function LogoModel() {
   return (
     <Canvas
       camera={{ position: [0, 0, 6], fov: 45 }}
@@ -83,3 +90,6 @@ export default function LogoModel() {
     </Canvas>
   )
 }
+
+// memo prevents Canvas teardown + SVG re-fetch on parent re-renders
+export default memo(LogoModel)
