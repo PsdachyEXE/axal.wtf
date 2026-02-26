@@ -4,11 +4,7 @@ import { OrbitControls } from '@react-three/drei'
 import { SVGLoader } from 'three/examples/jsm/loaders/SVGLoader.js'
 import * as THREE from 'three'
 
-// Enable Three.js loader cache so re-mounts don't re-fetch
 THREE.Cache.enabled = true
-
-// Pre-warm: start loading the SVG as soon as this module is imported,
-// before the component ever mounts.
 useLoader.preload(SVGLoader, '/logo.svg')
 
 function LogoMesh() {
@@ -91,5 +87,4 @@ function LogoModel() {
   )
 }
 
-// memo prevents Canvas teardown + SVG re-fetch on parent re-renders
 export default memo(LogoModel)

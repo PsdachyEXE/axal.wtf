@@ -70,7 +70,6 @@ function ProductCard({ name, onGetAccess }) {
 
   return (
     <div ref={ref} className="product-card">
-      {/* Card header */}
       <div style={{ marginBottom: '24px' }}>
         <div className="sub-label">// PRODUCT</div>
         <h3
@@ -101,7 +100,6 @@ function ProductCard({ name, onGetAccess }) {
         </div>
       </div>
 
-      {/* Pricing tiers */}
       <div>
         <TierRow
           period="Monthly"
@@ -131,13 +129,11 @@ export default function Products({ onGetAccess }) {
         margin: '0 auto',
       }}
     >
-      {/* Section label */}
       <div ref={labelRef} style={{ marginBottom: '48px' }}>
         <div className="label-comment">// PRODUCTS</div>
         <div className="section-rule" />
       </div>
 
-      {/* Product cards */}
       <div style={{ display: 'flex', gap: '24px', flexWrap: 'wrap' }}>
         <ProductCard name="Aftermath" onGetAccess={onGetAccess} />
         <ProductCard name="Project Delta" onGetAccess={onGetAccess} />

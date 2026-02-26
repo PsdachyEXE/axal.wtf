@@ -39,7 +39,6 @@ export default function Hero() {
     >
       <div className="hero-overlay" />
 
-      {/* Content container */}
       <div
         style={{
           maxWidth: '1200px',
@@ -55,7 +54,6 @@ export default function Hero() {
         }}
         className="hero-grid"
       >
-        {/* Left: Text */}
         <div>
           <FadeInSection delay={0.1}>
             <div
@@ -123,7 +121,6 @@ export default function Hero() {
           </FadeInSection>
         </div>
 
-        {/* Right: 3D Logo */}
         <FadeInSection delay={0.4}>
           <div
             style={{

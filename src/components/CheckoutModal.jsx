@@ -97,7 +97,6 @@ export default function CheckoutModal({ product, tier, price, onClose }) {
 
         <button onClick={onClose} className="modal-close" aria-label="Close">×</button>
 
-        {/* Header */}
         <div style={{ padding: '28px 32px 24px', borderBottom: '1px solid #1e1e1e' }}>
           <div className="label-comment">// CHECKOUT</div>
           <div style={{ display: 'flex', alignItems: 'baseline', gap: '12px', flexWrap: 'wrap', marginTop: '10px' }}>
@@ -129,7 +128,6 @@ export default function CheckoutModal({ product, tier, price, onClose }) {
           </div>
         </div>
 
-        {/* Order summary */}
         <div style={{ padding: '20px 32px', borderBottom: '1px solid #1e1e1e' }}>
           <div
             style={{
@@ -181,7 +179,6 @@ export default function CheckoutModal({ product, tier, price, onClose }) {
           </div>
         </div>
 
-        {/* Form */}
         {success ? (
           <div style={{ padding: '32px', textAlign: 'center' }}>
             <div

@@ -8,9 +8,6 @@ export default defineConfig({
     tailwindcss(),
   ],
   server: {
-    // In development, proxy /api/* to the Spring Boot backend so there
-    // are no CORS issues. The client code uses relative /api/... paths,
-    // and this proxy rewrites them to http://localhost:8080/api/...
     proxy: {
       '/api': {
         target: 'http://localhost:8080',

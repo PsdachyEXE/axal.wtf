@@ -85,7 +85,6 @@ function DonationRow({ donation, isLast }) {
         borderBottom: isLast ? 'none' : '1px solid #1e1e1e',
       }}
     >
-      {/* Left: name + message */}
       <div>
         <div
           style={{
@@ -113,7 +112,6 @@ function DonationRow({ donation, isLast }) {
         )}
       </div>
 
-      {/* Center: amount */}
       <div
         style={{
           fontFamily: 'Syne, sans-serif',
@@ -126,7 +124,6 @@ function DonationRow({ donation, isLast }) {
         {donation.amount}
       </div>
 
-      {/* Right: time */}
       <div
         style={{
           fontFamily: 'DM Mono, monospace',
@@ -208,7 +205,6 @@ export default function Donations() {
       `}</style>
 
       <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-        {/* Section header */}
         <div ref={headerRef} style={{ marginBottom: '48px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '4px' }}>
             <div className="label-comment">// DONATIONS</div>
