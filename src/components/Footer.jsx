@@ -54,7 +54,7 @@ export default function Footer() {
               letterSpacing: '0.04em',
             }}
           >
-            © 2025 AXAL
+            © 2026 AXAL
           </span>
           <span
             style={{

@@ -35,7 +35,7 @@ const mockDonations = [
     id: 1,
     name: 'Orange451',
     amount: '€67.00',
-    message: 'I work for the mossad',
+    message: 'Keep up the amazing work!',
     time: '2m ago',
   },
   {
@@ -63,7 +63,7 @@ const mockDonations = [
     id: 5,
     name: 'The big Yahoo',
     amount: '€15.00',
-    message: 'Project Delta script makes me want to bomb the Pentagon',
+    message: 'Project Delta is exactly what I needed — thank you!',
     time: '5h ago',
   },
 ]
