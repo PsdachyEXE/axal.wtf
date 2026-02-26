@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { initiateCheckout } from '../api/checkout'
 
 const TIER_DATA = {
   Monthly: { label: 'Monthly', suffix: '/mo', note: 'Billed monthly. Cancel anytime.' },
@@ -18,6 +19,9 @@ export default function CheckoutModal({ product, tier, price, onClose }) {
   const overlayRef = useRef()
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(null)
+  const [success, setSuccess] = useState(false)
 
   const tierInfo = TIER_DATA[tier] ?? TIER_DATA.Monthly
 
@@ -36,6 +40,25 @@ export default function CheckoutModal({ product, tier, price, onClose }) {
 
   const handleOverlayClick = (e) => {
     if (e.target === overlayRef.current) onClose()
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    if (!name.trim()) { setError('Please enter your full name.'); return }
+    if (!email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setError('Please enter a valid email address.')
+      return
+    }
+    setLoading(true)
+    setError(null)
+    try {
+      await initiateCheckout({ product, tier, price, name: name.trim(), email: email.trim() })
+      setSuccess(true)
+    } catch (err) {
+      setError(err.message || 'Something went wrong. Please try again.')
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -159,51 +182,88 @@ export default function CheckoutModal({ product, tier, price, onClose }) {
         </div>
 
         {/* Form */}
-        <form
-          onSubmit={(e) => e.preventDefault()}
-          style={{ padding: '24px 32px 28px', display: 'flex', flexDirection: 'column', gap: '16px' }}
-        >
-          <FormField label="Full Name">
-            <input
-              type="text"
-              placeholder="Your name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="form-input"
-              autoComplete="name"
-            />
-          </FormField>
-
-          <FormField label="Email Address">
-            <input
-              type="email"
-              placeholder="you@example.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="form-input"
-              autoComplete="email"
-            />
-          </FormField>
-
-          <div style={{ marginTop: '8px' }}>
-            <button type="button" className="modal-submit">
-              PROCEED TO PAYMENT →
-            </button>
+        {success ? (
+          <div style={{ padding: '32px', textAlign: 'center' }}>
+            <div
+              style={{
+                fontFamily: 'DM Mono, monospace',
+                fontSize: '12px',
+                color: '#22c55e',
+                letterSpacing: '0.06em',
+                marginBottom: '16px',
+              }}
+            >
+              // request received
+            </div>
+            <p style={{ fontFamily: 'DM Mono, monospace', fontSize: '13px', color: '#aaaaaa', lineHeight: 1.6 }}>
+              We'll be in touch at <strong style={{ color: '#e8e8e8' }}>{email}</strong> shortly.
+            </p>
           </div>
-
-          <div
-            style={{
-              fontFamily: 'DM Mono, monospace',
-              fontSize: '10px',
-              fontWeight: 300,
-              color: '#2a2a2a',
-              letterSpacing: '0.04em',
-              textAlign: 'center',
-            }}
+        ) : (
+          <form
+            onSubmit={handleSubmit}
+            style={{ padding: '24px 32px 28px', display: 'flex', flexDirection: 'column', gap: '16px' }}
           >
-            // payment processing not yet integrated
-          </div>
-        </form>
+            <FormField label="Full Name">
+              <input
+                type="text"
+                placeholder="Your name"
+                value={name}
+                onChange={(e) => { setName(e.target.value); setError(null) }}
+                className="form-input"
+                autoComplete="name"
+              />
+            </FormField>
+
+            <FormField label="Email Address">
+              <input
+                type="email"
+                placeholder="you@example.com"
+                value={email}
+                onChange={(e) => { setEmail(e.target.value); setError(null) }}
+                className="form-input"
+                autoComplete="email"
+              />
+            </FormField>
+
+            {error && (
+              <div
+                style={{
+                  fontFamily: 'DM Mono, monospace',
+                  fontSize: '11px',
+                  color: '#ef4444',
+                  letterSpacing: '0.04em',
+                }}
+              >
+                {error}
+              </div>
+            )}
+
+            <div style={{ marginTop: '8px' }}>
+              <button
+                type="submit"
+                className="modal-submit"
+                style={{ opacity: loading ? 0.5 : 1 }}
+                disabled={loading}
+              >
+                {loading ? 'PROCESSING...' : 'PROCEED TO PAYMENT →'}
+              </button>
+            </div>
+
+            <div
+              style={{
+                fontFamily: 'DM Mono, monospace',
+                fontSize: '10px',
+                fontWeight: 300,
+                color: '#2a2a2a',
+                letterSpacing: '0.04em',
+                textAlign: 'center',
+              }}
+            >
+              // payment processed via backend
+            </div>
+          </form>
+        )}
       </div>
     </div>
   )

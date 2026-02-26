@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import useScrollFadeIn from '../hooks/useScrollFadeIn'
+import { submitDonation } from '../api/donations'
 
 // Mock static data — replace with WebSocket/SSE endpoint
 const mockDonations = [
@@ -153,10 +154,41 @@ export default function Donations() {
   const [amount, setAmount] = useState('')
   const [message, setMessage] = useState('')
   const [selectedPreset, setSelectedPreset] = useState(null)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(null)
+  const [success, setSuccess] = useState(false)
 
   const handlePreset = (preset) => {
     setSelectedPreset(preset)
     setAmount(preset.replace('€', ''))
+    setError(null)
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    const numAmount = parseFloat(amount)
+    if (!amount || isNaN(numAmount) || numAmount <= 0) {
+      setError('Please enter a valid amount.')
+      return
+    }
+    setLoading(true)
+    setError(null)
+    try {
+      await submitDonation({
+        name: donorName.trim() || 'Anonymous',
+        amount: numAmount,
+        message: message.trim() || null,
+      })
+      setSuccess(true)
+      setDonorName('')
+      setAmount('')
+      setMessage('')
+      setSelectedPreset(null)
+    } catch (err) {
+      setError(err.message || 'Something went wrong. Please try again.')
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -299,7 +331,7 @@ export default function Donations() {
           </div>
 
           <form
-            onSubmit={(e) => e.preventDefault()}
+            onSubmit={handleSubmit}
             style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}
           >
             {/* Amount presets */}
@@ -386,27 +418,58 @@ export default function Donations() {
               </div>
             </div>
 
-            {/* Submit */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '20px', flexWrap: 'wrap' }}>
-              <button
-                type="button"
-                className="btn-outline"
-                style={{ padding: '12px 28px' }}
-              >
-                Donate →
-              </button>
-              <span
+            {/* Error */}
+            {error && (
+              <div
                 style={{
                   fontFamily: 'DM Mono, monospace',
-                  fontSize: '10px',
-                  fontWeight: 300,
-                  color: '#2a2a2a',
+                  fontSize: '11px',
+                  color: '#ef4444',
                   letterSpacing: '0.04em',
                 }}
               >
-                // payment processing not yet integrated
-              </span>
-            </div>
+                {error}
+              </div>
+            )}
+
+            {/* Success */}
+            {success && (
+              <div
+                style={{
+                  fontFamily: 'DM Mono, monospace',
+                  fontSize: '12px',
+                  color: '#22c55e',
+                  letterSpacing: '0.04em',
+                }}
+              >
+                // thank you for your donation!
+              </div>
+            )}
+
+            {/* Submit */}
+            {!success && (
+              <div style={{ display: 'flex', alignItems: 'center', gap: '20px', flexWrap: 'wrap' }}>
+                <button
+                  type="submit"
+                  className="btn-outline"
+                  style={{ padding: '12px 28px', opacity: loading ? 0.5 : 1 }}
+                  disabled={loading}
+                >
+                  {loading ? 'Submitting...' : 'Donate →'}
+                </button>
+                <span
+                  style={{
+                    fontFamily: 'DM Mono, monospace',
+                    fontSize: '10px',
+                    fontWeight: 300,
+                    color: '#2a2a2a',
+                    letterSpacing: '0.04em',
+                  }}
+                >
+                  // payment processing via backend
+                </span>
+              </div>
+            )}
           </form>
         </div>
       </div>
