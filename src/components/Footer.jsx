@@ -1,11 +1,6 @@
 export default function Footer() {
   return (
-    <footer
-      style={{
-        borderTop: '1px solid #1e1e1e',
-        padding: '32px 24px',
-      }}
-    >
+    <footer style={{ borderTop: '1px solid #1e1e1e', padding: '32px 24px' }}>
       <div
         style={{
           maxWidth: '1200px',
@@ -17,20 +12,10 @@ export default function Footer() {
           gap: '16px',
         }}
       >
-        {/* Left: Wordmark */}
-        <span
-          style={{
-            fontFamily: 'Syne, sans-serif',
-            fontWeight: 800,
-            fontSize: '16px',
-            letterSpacing: '0.05em',
-            color: '#555555',
-          }}
-        >
+        <span className="nav-wordmark" style={{ fontSize: '16px', color: '#555555' }}>
           AXAL
         </span>
 
-        {/* Center: domain */}
         <span
           style={{
             fontFamily: 'DM Mono, monospace',
@@ -43,7 +28,6 @@ export default function Footer() {
           axal.wtf
         </span>
 
-        {/* Right: copyright + credits */}
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '4px' }}>
           <span
             style={{

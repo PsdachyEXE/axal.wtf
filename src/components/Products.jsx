@@ -84,25 +84,8 @@ function TierRow({ period, price, badge, onGetAccess }) {
       <button
         type="button"
         onClick={onGetAccess}
-        style={{
-          fontFamily: 'DM Mono, monospace',
-          fontWeight: 500,
-          fontSize: '12px',
-          color: '#e8e8e8',
-          background: 'none',
-          letterSpacing: '0.05em',
-          border: '1px solid #555555',
-          padding: '8px 16px',
-          transition: 'border-color 0.2s, color 0.2s',
-          whiteSpace: 'nowrap',
-          cursor: 'pointer',
-        }}
-        onMouseEnter={(e) => {
-          e.currentTarget.style.borderColor = '#e8e8e8'
-        }}
-        onMouseLeave={(e) => {
-          e.currentTarget.style.borderColor = '#555555'
-        }}
+        className="btn-outline"
+        style={{ padding: '8px 16px', whiteSpace: 'nowrap' }}
       >
         Get Access
       </button>
@@ -110,37 +93,14 @@ function TierRow({ period, price, badge, onGetAccess }) {
   )
 }
 
-function ProductCard({ name, delay = 0, onGetAccess }) {
+function ProductCard({ name, onGetAccess }) {
   const ref = useScrollFadeIn()
 
   return (
-    <div
-      ref={ref}
-      style={{
-        border: '1px solid #2a2a2a',
-        padding: '32px',
-        background: 'rgba(255,255,255,0.01)',
-        flex: 1,
-        minWidth: 0,
-        transition: 'border-color 0.2s',
-      }}
-      onMouseEnter={(e) => (e.currentTarget.style.borderColor = '#555555')}
-      onMouseLeave={(e) => (e.currentTarget.style.borderColor = '#2a2a2a')}
-    >
+    <div ref={ref} className="product-card">
       {/* Card header */}
       <div style={{ marginBottom: '24px' }}>
-        <div
-          style={{
-            fontFamily: 'DM Mono, monospace',
-            fontSize: '10px',
-            color: '#555555',
-            letterSpacing: '0.15em',
-            textTransform: 'uppercase',
-            marginBottom: '10px',
-          }}
-        >
-          // PRODUCT
-        </div>
+        <div className="sub-label">// PRODUCT</div>
         <h3
           style={{
             fontFamily: 'Syne, sans-serif',
@@ -153,12 +113,7 @@ function ProductCard({ name, delay = 0, onGetAccess }) {
         >
           {name}
         </h3>
-        <div
-          style={{
-            borderBottom: '1px solid #2a2a2a',
-            paddingBottom: '20px',
-          }}
-        >
+        <div style={{ borderBottom: '1px solid #2a2a2a', paddingBottom: '20px' }}>
           <p
             style={{
               fontFamily: 'DM Mono, monospace',
@@ -206,38 +161,14 @@ export default function Products({ onGetAccess }) {
     >
       {/* Section label */}
       <div ref={labelRef} style={{ marginBottom: '48px' }}>
-        <div
-          style={{
-            fontFamily: 'DM Mono, monospace',
-            fontSize: '12px',
-            fontWeight: 500,
-            color: '#555555',
-            letterSpacing: '0.15em',
-            marginBottom: '4px',
-          }}
-        >
-          // PRODUCTS
-        </div>
-        <div
-          style={{
-            width: '48px',
-            height: '1px',
-            background: '#2a2a2a',
-            marginTop: '12px',
-          }}
-        />
+        <div className="label-comment">// PRODUCTS</div>
+        <div className="section-rule" />
       </div>
 
       {/* Product cards */}
-      <div
-        style={{
-          display: 'flex',
-          gap: '24px',
-          flexWrap: 'wrap',
-        }}
-      >
-        <ProductCard name="Aftermath" delay={0} onGetAccess={onGetAccess} />
-        <ProductCard name="Project Delta" delay={0.1} onGetAccess={onGetAccess} />
+      <div style={{ display: 'flex', gap: '24px', flexWrap: 'wrap' }}>
+        <ProductCard name="Aftermath" onGetAccess={onGetAccess} />
+        <ProductCard name="Project Delta" onGetAccess={onGetAccess} />
       </div>
     </section>
   )

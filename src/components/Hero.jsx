@@ -36,20 +36,7 @@ export default function Hero() {
         paddingTop: '60px',
       }}
     >
-      {/* Grid overlay */}
-      <div
-        style={{
-          position: 'absolute',
-          inset: 0,
-          backgroundImage: `
-            linear-gradient(rgba(42, 42, 42, 0.3) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(42, 42, 42, 0.3) 1px, transparent 1px)
-          `,
-          backgroundSize: '60px 60px',
-          pointerEvents: 'none',
-          zIndex: 0,
-        }}
-      />
+      <div className="hero-overlay" />
 
       {/* Content container */}
       <div
@@ -83,7 +70,7 @@ export default function Hero() {
                 paddingLeft: '12px',
               }}
             >
-              // PREMIUM SCRIPT
+              // GAMING REDEFINED
             </div>
           </FadeInSection>
 
@@ -115,47 +102,19 @@ export default function Hero() {
                 marginBottom: '48px',
               }}
             >
-              C:\Gays 
+              High-performance software solutions for the modern age.
             </p>
           </FadeInSection>
 
           <FadeInSection delay={0.5}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '28px', flexWrap: 'wrap' }}>
-              <a
-                href="#products"
-                style={{
-                  fontFamily: 'DM Mono, monospace',
-                  fontWeight: 500,
-                  fontSize: '13px',
-                  color: '#0a0a0a',
-                  textDecoration: 'none',
-                  letterSpacing: '0.06em',
-                  background: '#e8e8e8',
-                  padding: '12px 28px',
-                  display: 'inline-block',
-                  transition: 'background 0.2s',
-                }}
-                onMouseEnter={(e) => (e.target.style.background = '#ffffff')}
-                onMouseLeave={(e) => (e.target.style.background = '#e8e8e8')}
-              >
+              <a href="#products" className="btn-primary" style={{ padding: '12px 28px' }}>
                 VIEW PRODUCTS
               </a>
               <a
                 href="#donations"
-                style={{
-                  fontFamily: 'DM Mono, monospace',
-                  fontWeight: 400,
-                  fontSize: '13px',
-                  color: '#aaaaaa',
-                  textDecoration: 'none',
-                  letterSpacing: '0.04em',
-                  transition: 'color 0.2s',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '6px',
-                }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = '#e8e8e8')}
-                onMouseLeave={(e) => (e.currentTarget.style.color = '#aaaaaa')}
+                className="nav-link"
+                style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}
               >
                 Donations →
               </a>
@@ -180,19 +139,7 @@ export default function Hero() {
         </FadeInSection>
       </div>
 
-      {/* Bottom fade */}
-      <div
-        style={{
-          position: 'absolute',
-          bottom: 0,
-          left: 0,
-          right: 0,
-          height: '120px',
-          background: 'linear-gradient(to bottom, transparent, #0a0a0a)',
-          pointerEvents: 'none',
-          zIndex: 1,
-        }}
-      />
+      <div className="hero-fade" />
     </section>
   )
 }

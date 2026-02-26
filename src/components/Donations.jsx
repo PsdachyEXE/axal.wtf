@@ -171,22 +171,6 @@ function DonationRow({ donation, isLast }) {
 
 const PRESET_AMOUNTS = ['€5', '€10', '€15', '€25']
 
-const donationInputStyle = {
-  width: '100%',
-  background: '#111111',
-  border: '1px solid #2a2a2a',
-  color: '#e8e8e8',
-  fontFamily: 'DM Mono, monospace',
-  fontSize: '13px',
-  fontWeight: 400,
-  padding: '11px 14px',
-  outline: 'none',
-  transition: 'border-color 0.2s',
-  borderRadius: 0,
-  appearance: 'none',
-  WebkitAppearance: 'none',
-}
-
 export default function Donations() {
   const headerRef = useScrollFadeIn()
   const feedRef = useScrollFadeIn()
@@ -197,17 +181,11 @@ export default function Donations() {
   const [amount, setAmount] = useState('')
   const [message, setMessage] = useState('')
   const [selectedPreset, setSelectedPreset] = useState(null)
-  const [focusedField, setFocusedField] = useState(null)
 
   const handlePreset = (preset) => {
     setSelectedPreset(preset)
     setAmount(preset.replace('€', ''))
   }
-
-  const focusStyle = (field) =>
-    focusedField === field
-      ? { ...donationInputStyle, borderColor: '#555555' }
-      : donationInputStyle
 
   return (
     <section
@@ -228,17 +206,7 @@ export default function Donations() {
         {/* Section header */}
         <div ref={headerRef} style={{ marginBottom: '48px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '4px' }}>
-            <div
-              style={{
-                fontFamily: 'DM Mono, monospace',
-                fontSize: '12px',
-                fontWeight: 500,
-                color: '#555555',
-                letterSpacing: '0.15em',
-              }}
-            >
-              // DONATIONS
-            </div>
+            <div className="label-comment">// DONATIONS</div>
             {/* Live indicator */}
             <div
               style={{
@@ -263,26 +231,7 @@ export default function Donations() {
               </span>
             </div>
           </div>
-          <div
-            style={{
-              fontFamily: 'DM Mono, monospace',
-              fontSize: '10px',
-              color: '#2a2a2a',
-              marginTop: '8px',
-              letterSpacing: '0.06em',
-            }}
-          >
-            {/* Note for backend dev */}
-            {/* TODO: Wire to WebSocket or SSE endpoint to replace mock data */}
-          </div>
-          <div
-            style={{
-              width: '48px',
-              height: '1px',
-              background: '#2a2a2a',
-              marginTop: '12px',
-            }}
-          />
+          <div className="section-rule" />
         </div>
 
         {/* Two-column layout */}
@@ -297,18 +246,7 @@ export default function Donations() {
         >
           {/* Donation feed */}
           <div ref={feedRef}>
-            <div
-              style={{
-                fontFamily: 'DM Mono, monospace',
-                fontSize: '10px',
-                color: '#555555',
-                letterSpacing: '0.1em',
-                marginBottom: '4px',
-                textTransform: 'uppercase',
-              }}
-            >
-              Recent
-            </div>
+            <div className="sub-label">Recent</div>
             <div style={{ borderTop: '1px solid #2a2a2a' }}>
               {mockDonations.map((donation, i) => (
                 <DonationRow
@@ -322,18 +260,7 @@ export default function Donations() {
 
           {/* Leaderboard */}
           <div ref={leaderboardRef}>
-            <div
-              style={{
-                fontFamily: 'DM Mono, monospace',
-                fontSize: '10px',
-                color: '#555555',
-                letterSpacing: '0.1em',
-                marginBottom: '4px',
-                textTransform: 'uppercase',
-              }}
-            >
-              Top Donors
-            </div>
+            <div className="sub-label">Top Donors</div>
             <div style={{ border: '1px solid #2a2a2a' }}>
               {mockTopDonors.map((donor, i) => (
                 <div
@@ -395,26 +322,8 @@ export default function Donations() {
           }}
         >
           <div style={{ marginBottom: '28px' }}>
-            <div
-              style={{
-                fontFamily: 'DM Mono, monospace',
-                fontSize: '12px',
-                fontWeight: 500,
-                color: '#555555',
-                letterSpacing: '0.15em',
-                marginBottom: '4px',
-              }}
-            >
-              // LEAVE A DONATION
-            </div>
-            <div
-              style={{
-                width: '48px',
-                height: '1px',
-                background: '#2a2a2a',
-                marginTop: '12px',
-              }}
-            />
+            <div className="label-comment">// LEAVE A DONATION</div>
+            <div className="section-rule" />
           </div>
 
           <form
@@ -423,48 +332,14 @@ export default function Donations() {
           >
             {/* Amount presets */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              <label
-                style={{
-                  fontFamily: 'DM Mono, monospace',
-                  fontSize: '10px',
-                  fontWeight: 500,
-                  color: '#555555',
-                  letterSpacing: '0.12em',
-                  textTransform: 'uppercase',
-                }}
-              >
-                Amount
-              </label>
+              <label className="form-label">Amount</label>
               <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', alignItems: 'center' }}>
                 {PRESET_AMOUNTS.map((preset) => (
                   <button
                     key={preset}
                     type="button"
                     onClick={() => handlePreset(preset)}
-                    style={{
-                      fontFamily: 'DM Mono, monospace',
-                      fontSize: '12px',
-                      fontWeight: 500,
-                      color: selectedPreset === preset ? '#0a0a0a' : '#aaaaaa',
-                      background: selectedPreset === preset ? '#e8e8e8' : 'none',
-                      border: `1px solid ${selectedPreset === preset ? '#e8e8e8' : '#2a2a2a'}`,
-                      padding: '9px 18px',
-                      cursor: 'pointer',
-                      transition: 'all 0.15s',
-                      letterSpacing: '0.04em',
-                    }}
-                    onMouseEnter={(e) => {
-                      if (selectedPreset !== preset) {
-                        e.currentTarget.style.borderColor = '#555555'
-                        e.currentTarget.style.color = '#e8e8e8'
-                      }
-                    }}
-                    onMouseLeave={(e) => {
-                      if (selectedPreset !== preset) {
-                        e.currentTarget.style.borderColor = '#2a2a2a'
-                        e.currentTarget.style.color = '#aaaaaa'
-                      }
-                    }}
+                    className={`preset-btn${selectedPreset === preset ? ' selected' : ''}`}
                   >
                     {preset}
                   </button>
@@ -504,12 +379,8 @@ export default function Donations() {
                       setAmount(e.target.value)
                       setSelectedPreset(null)
                     }}
-                    style={{
-                      ...focusStyle('amount'),
-                      paddingLeft: '26px',
-                    }}
-                    onFocus={() => setFocusedField('amount')}
-                    onBlur={() => setFocusedField(null)}
+                    className="form-input"
+                    style={{ paddingLeft: '26px' }}
                   />
                 </div>
               </div>
@@ -517,58 +388,28 @@ export default function Donations() {
 
             {/* Name + Message in a row */}
             <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: '1fr 1fr',
-                gap: '16px',
-              }}
+              style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}
               className="donate-fields"
             >
               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                <label
-                  style={{
-                    fontFamily: 'DM Mono, monospace',
-                    fontSize: '10px',
-                    fontWeight: 500,
-                    color: '#555555',
-                    letterSpacing: '0.12em',
-                    textTransform: 'uppercase',
-                  }}
-                >
-                  Name (optional)
-                </label>
+                <label className="form-label">Name (optional)</label>
                 <input
                   type="text"
                   placeholder="Anonymous"
                   value={donorName}
                   onChange={(e) => setDonorName(e.target.value)}
-                  style={focusStyle('name')}
-                  onFocus={() => setFocusedField('name')}
-                  onBlur={() => setFocusedField(null)}
+                  className="form-input"
                 />
               </div>
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                <label
-                  style={{
-                    fontFamily: 'DM Mono, monospace',
-                    fontSize: '10px',
-                    fontWeight: 500,
-                    color: '#555555',
-                    letterSpacing: '0.12em',
-                    textTransform: 'uppercase',
-                  }}
-                >
-                  Message (optional)
-                </label>
+                <label className="form-label">Message (optional)</label>
                 <input
                   type="text"
                   placeholder="say something..."
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
-                  style={focusStyle('message')}
-                  onFocus={() => setFocusedField('message')}
-                  onBlur={() => setFocusedField(null)}
+                  className="form-input"
                 />
               </div>
             </div>
@@ -577,24 +418,8 @@ export default function Donations() {
             <div style={{ display: 'flex', alignItems: 'center', gap: '20px', flexWrap: 'wrap' }}>
               <button
                 type="button"
-                style={{
-                  fontFamily: 'DM Mono, monospace',
-                  fontWeight: 500,
-                  fontSize: '13px',
-                  color: '#e8e8e8',
-                  background: 'none',
-                  border: '1px solid #555555',
-                  padding: '12px 28px',
-                  letterSpacing: '0.06em',
-                  cursor: 'pointer',
-                  transition: 'border-color 0.2s, color 0.2s',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = '#e8e8e8'
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = '#555555'
-                }}
+                className="btn-outline"
+                style={{ padding: '12px 28px' }}
               >
                 Donate →
               </button>
