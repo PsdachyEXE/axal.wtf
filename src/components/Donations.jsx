@@ -194,6 +194,7 @@ export default function Donations() {
   return (
     <section
       id="donations"
+      aria-label="Donations"
       style={{
         padding: '100px 24px',
         borderTop: '1px solid #1e1e1e',

@@ -27,6 +27,7 @@ export default function Hero() {
   return (
     <section
       id="hero"
+      aria-label="Hero"
       style={{
         position: 'relative',
         minHeight: '100vh',
@@ -133,6 +134,8 @@ export default function Hero() {
               position: 'relative',
             }}
             className="three-canvas"
+            role="img"
+            aria-label="Axal 3D logo"
           >
             <LogoModel />
           </div>

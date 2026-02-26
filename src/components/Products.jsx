@@ -57,6 +57,7 @@ function TierRow({ period, price, badge, onGetAccess }) {
         onClick={onGetAccess}
         className="btn-outline"
         style={{ padding: '8px 16px', whiteSpace: 'nowrap' }}
+        aria-label={`Get ${period.toLowerCase()} access — ${price}`}
       >
         Get Access
       </button>

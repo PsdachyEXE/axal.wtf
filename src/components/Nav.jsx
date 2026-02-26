@@ -10,9 +10,9 @@ export default function Nav() {
   }, [])
 
   return (
-    <nav className={`nav-bar${scrolled ? ' scrolled' : ''}`}>
+    <nav className={`nav-bar${scrolled ? ' scrolled' : ''}`} aria-label="Main navigation">
       <div className="nav-inner">
-        <a href="#" className="nav-wordmark">AXAL</a>
+        <a href="#" className="nav-wordmark" aria-label="Axal — back to top">AXAL</a>
         <div className="nav-right">
           <a href="#products" className="nav-link">Products</a>
           <a href="#donations" className="nav-link">Donations</a>
