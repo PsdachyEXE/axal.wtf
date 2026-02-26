@@ -16,7 +16,7 @@ function LogoMesh() {
       SVGLoader.createShapes(path).forEach((shape) => allShapes.push(shape))
     })
 
-    // Compute 2-D bounding box for normalisation scale
+    // compute bounding box for normalisation scale
     const tempGeo = new THREE.ShapeGeometry(allShapes)
     tempGeo.computeBoundingBox()
     const tmpSize = new THREE.Vector3()
@@ -26,11 +26,11 @@ function LogoMesh() {
     const maxDim = Math.max(tmpSize.x, tmpSize.y)
     const geoScale = 3 / maxDim           // logo = 3 world-units wide
 
-    // Proportional depth → solid, no z-fighting between cap faces
+    // proportional depth, no z-fighting between cap faces
     const svgDepth = 0.55 / geoScale
 
-    // SVG now has: smooth Bezier arcs (ring) + straight L commands (A legs)
-    // High curveSegments tessellates the ring arcs smoothly
+    // smooth bezier arcs (ring) and straight line commands (legs)
+    // high curveSegments for smooth ring arcs
     const geometry = new THREE.ExtrudeGeometry(allShapes, {
       depth: svgDepth,
       bevelEnabled: false,

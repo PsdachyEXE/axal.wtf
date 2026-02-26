@@ -2,7 +2,7 @@ import { useState } from 'react'
 import useScrollFadeIn from '../hooks/useScrollFadeIn'
 import { submitDonation } from '../api/donations'
 
-// Mock static data — replace with WebSocket/SSE endpoint
+// mock static data, replace with websocket/sse endpoint
 const mockDonations = [
   {
     id: 1,
@@ -208,7 +208,7 @@ export default function Donations() {
         <div ref={headerRef} style={{ marginBottom: '48px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '4px' }}>
             <div className="label-comment">// DONATIONS</div>
-            {/* Live indicator */}
+            {/* live indicator */}
             <div
               style={{
                 display: 'flex',
@@ -235,7 +235,7 @@ export default function Donations() {
           <div className="section-rule" />
         </div>
 
-        {/* Two-column layout */}
+        {/* two-column layout */}
         <div
           className="donations-grid"
           style={{
@@ -245,7 +245,7 @@ export default function Donations() {
             alignItems: 'start',
           }}
         >
-          {/* Donation feed */}
+          {/* donation feed */}
           <div ref={feedRef}>
             <div className="sub-label">Recent</div>
             <div style={{ borderTop: '1px solid #2a2a2a' }}>
@@ -259,7 +259,7 @@ export default function Donations() {
             </div>
           </div>
 
-          {/* Leaderboard */}
+          {/* leaderboard */}
           <div ref={leaderboardRef}>
             <div className="sub-label">Top Donors</div>
             <div style={{ border: '1px solid #2a2a2a' }}>
@@ -313,7 +313,7 @@ export default function Donations() {
           </div>
         </div>
 
-        {/* Donation input form */}
+        {/* donation input form */}
         <div
           ref={formRef}
           style={{
@@ -331,7 +331,7 @@ export default function Donations() {
             onSubmit={handleSubmit}
             style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}
           >
-            {/* Amount presets */}
+            {/* amount presets */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
               <label className="form-label">Amount</label>
               <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', alignItems: 'center' }}>
@@ -387,7 +387,7 @@ export default function Donations() {
               </div>
             </div>
 
-            {/* Name + Message in a row */}
+            {/* name + message in a row */}
             <div
               style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}
               className="donate-fields"
@@ -415,7 +415,7 @@ export default function Donations() {
               </div>
             </div>
 
-            {/* Error */}
+            {/* error */}
             {error && (
               <div
                 style={{
@@ -429,7 +429,7 @@ export default function Donations() {
               </div>
             )}
 
-            {/* Success */}
+            {/* success */}
             {success && (
               <div
                 style={{
@@ -443,7 +443,7 @@ export default function Donations() {
               </div>
             )}
 
-            {/* Submit */}
+            {/* submit */}
             {!success && (
               <div style={{ display: 'flex', alignItems: 'center', gap: '20px', flexWrap: 'wrap' }}>
                 <button
@@ -463,7 +463,7 @@ export default function Donations() {
                     letterSpacing: '0.04em',
                   }}
                 >
-                  // Powered by ___
+                  // powered by ___
                 </span>
               </div>
             )}

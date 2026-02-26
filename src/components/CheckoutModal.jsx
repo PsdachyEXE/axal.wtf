@@ -25,14 +25,14 @@ export default function CheckoutModal({ product, tier, price, onClose }) {
 
   const tierInfo = TIER_DATA[tier] ?? TIER_DATA.Monthly
 
-  // Close on Escape
+  // close on escape
   useEffect(() => {
     const onKey = (e) => { if (e.key === 'Escape') onClose() }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
   }, [onClose])
 
-  // Prevent body scroll while open
+  // prevent body scroll while open
   useEffect(() => {
     document.body.style.overflow = 'hidden'
     return () => { document.body.style.overflow = '' }

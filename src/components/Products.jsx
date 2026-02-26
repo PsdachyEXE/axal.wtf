@@ -94,7 +94,7 @@ function ProductCard({ name, onGetAccess }) {
               lineHeight: 1.6,
             }}
           >
-            {/* Description placeholder */}
+            {/* description placeholder */}
             — description coming soon —
           </p>
         </div>
