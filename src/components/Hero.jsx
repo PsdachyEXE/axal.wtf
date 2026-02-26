@@ -71,7 +71,7 @@ export default function Hero() {
                 paddingLeft: '12px',
               }}
             >
-              // GAMING REDEFINED
+              // something 
             </div>
           </FadeInSection>
 
@@ -103,7 +103,7 @@ export default function Hero() {
                 marginBottom: '48px',
               }}
             >
-              High-performance software solutions for the modern age.
+              // idk
             </p>
           </FadeInSection>
 
