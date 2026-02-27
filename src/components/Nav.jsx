@@ -16,6 +16,7 @@ export default function Nav() {
         <div className="nav-right">
           <a href="#products" className="nav-link">Products</a>
           <a href="#donations" className="nav-link">Donations</a>
+          <a href="#faq" className="nav-link">FAQ</a>
           <a href="#products" className="nav-cta">Get Access</a>
         </div>
       </div>

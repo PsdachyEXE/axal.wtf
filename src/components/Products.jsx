@@ -1,6 +1,19 @@
 import useScrollFadeIn from '../hooks/useScrollFadeIn'
 
-function TierRow({ period, price, badge, onGetAccess }) {
+const FEATURES = [
+  'Instant delivery',
+  'Discord support',
+  'Reliable',
+  'Strongest on the market',
+  'Priority support',
+]
+
+const PRODUCTS = [
+  { name: 'Aftermath', status: 'UNDETECTED', features: FEATURES },
+  { name: 'Project Delta', status: 'UNDETECTED', features: FEATURES },
+]
+
+function TierRow({ period, price, badge, recommended, onGetAccess }) {
   return (
     <div
       style={{
@@ -55,7 +68,7 @@ function TierRow({ period, price, badge, onGetAccess }) {
       <button
         type="button"
         onClick={onGetAccess}
-        className="btn-outline"
+        className={recommended ? 'btn-primary' : 'btn-outline'}
         style={{ padding: '8px 16px', whiteSpace: 'nowrap' }}
         aria-label={`Get ${period.toLowerCase()} access — ${price}`}
       >
@@ -65,13 +78,24 @@ function TierRow({ period, price, badge, onGetAccess }) {
   )
 }
 
-function ProductCard({ name, onGetAccess }) {
+function ProductCard({ name, status, features, onGetAccess }) {
   const ref = useScrollFadeIn()
 
   return (
     <div ref={ref} className="product-card">
       <div style={{ marginBottom: '24px' }}>
-        <div className="sub-label">// PRODUCT</div>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
+          <div className="sub-label">// PRODUCT</div>
+          {status && (
+            <span className={`status-badge status-badge--${status.toLowerCase()}`}>
+              <span className="status-badge__dot" aria-hidden="true">
+                <span className="status-badge__ping" />
+                <span className="status-badge__core" />
+              </span>
+              {status}
+            </span>
+          )}
+        </div>
         <h3
           style={{
             fontFamily: 'Syne, sans-serif',
@@ -79,28 +103,23 @@ function ProductCard({ name, onGetAccess }) {
             fontSize: '28px',
             letterSpacing: '-0.01em',
             color: '#e8e8e8',
-            marginBottom: '16px',
+            marginBottom: '20px',
           }}
         >
           {name}
         </h3>
-        <div style={{ borderBottom: '1px solid #2a2a2a', paddingBottom: '20px' }}>
-          <p
-            style={{
-              fontFamily: 'DM Mono, monospace',
-              fontSize: '13px',
-              color: '#555555',
-              fontStyle: 'italic',
-              lineHeight: 1.6,
-            }}
-          >
-            {/* description placeholder */}
-            — description coming soon —
-          </p>
-        </div>
+
+        <ul className="feature-list">
+          {features.map((f) => (
+            <li key={f} className="feature-list__item">
+              <span className="feature-list__check">✓</span>
+              {f}
+            </li>
+          ))}
+        </ul>
       </div>
 
-      <div>
+      <div style={{ borderTop: '1px solid #2a2a2a', paddingTop: '4px' }}>
         <TierRow
           period="Monthly"
           price="€7/mo"
@@ -110,6 +129,7 @@ function ProductCard({ name, onGetAccess }) {
           period="Lifetime"
           price="€15 one-time"
           badge="BEST VALUE"
+          recommended
           onGetAccess={() => onGetAccess(name, 'Lifetime', '€15')}
         />
       </div>
@@ -134,9 +154,10 @@ export default function Products({ onGetAccess }) {
         <div className="section-rule" />
       </div>
 
-      <div style={{ display: 'flex', gap: '24px', flexWrap: 'wrap' }}>
-        <ProductCard name="Aftermath" onGetAccess={onGetAccess} />
-        <ProductCard name="Project Delta" onGetAccess={onGetAccess} />
+      <div className="products-grid">
+        {PRODUCTS.map((p) => (
+          <ProductCard key={p.name} {...p} onGetAccess={onGetAccess} />
+        ))}
       </div>
     </section>
   )

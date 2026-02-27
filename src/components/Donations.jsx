@@ -263,52 +263,58 @@ export default function Donations() {
           <div ref={leaderboardRef}>
             <div className="sub-label">Top Donors</div>
             <div style={{ border: '1px solid #2a2a2a' }}>
-              {mockTopDonors.map((donor, i) => (
-                <div
-                  key={donor.rank}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    padding: '14px 16px',
-                    borderBottom: i < mockTopDonors.length - 1 ? '1px solid #1e1e1e' : 'none',
-                  }}
-                >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                    <span
-                      style={{
-                        fontFamily: 'DM Mono, monospace',
-                        fontSize: '11px',
-                        color: '#2a2a2a',
-                        fontWeight: 500,
-                        width: '20px',
-                      }}
-                    >
-                      #{donor.rank}
-                    </span>
-                    <span
-                      style={{
-                        fontFamily: 'DM Mono, monospace',
-                        fontSize: '13px',
-                        color: i === 0 ? '#e8e8e8' : '#aaaaaa',
-                        fontWeight: i === 0 ? 500 : 400,
-                      }}
-                    >
-                      {donor.name}
-                    </span>
-                  </div>
-                  <span
+              {mockTopDonors.map((donor, i) => {
+                // rank accent colors
+                const rankColor = i === 0 ? '#c9a84c' : i === 1 ? '#9e9e9e' : '#9a6b3e'
+                const nameColor = i === 0 ? '#e8e8e8' : '#aaaaaa'
+                return (
+                  <div
+                    key={donor.rank}
                     style={{
-                      fontFamily: 'Syne, sans-serif',
-                      fontWeight: 700,
-                      fontSize: '14px',
-                      color: i === 0 ? '#e8e8e8' : '#aaaaaa',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      padding: '14px 16px',
+                      borderBottom: i < mockTopDonors.length - 1 ? '1px solid #1e1e1e' : 'none',
+                      background: i === 0 ? 'rgba(201,168,76,0.04)' : 'transparent',
                     }}
                   >
-                    {donor.total}
-                  </span>
-                </div>
-              ))}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                      <span
+                        style={{
+                          fontFamily: 'DM Mono, monospace',
+                          fontSize: '11px',
+                          color: rankColor,
+                          fontWeight: 500,
+                          width: '20px',
+                        }}
+                      >
+                        #{donor.rank}
+                      </span>
+                      <span
+                        style={{
+                          fontFamily: 'DM Mono, monospace',
+                          fontSize: '13px',
+                          color: nameColor,
+                          fontWeight: i === 0 ? 500 : 400,
+                        }}
+                      >
+                        {donor.name}
+                      </span>
+                    </div>
+                    <span
+                      style={{
+                        fontFamily: 'Syne, sans-serif',
+                        fontWeight: 700,
+                        fontSize: '14px',
+                        color: rankColor,
+                      }}
+                    >
+                      {donor.total}
+                    </span>
+                  </div>
+                )
+              })}
             </div>
           </div>
         </div>

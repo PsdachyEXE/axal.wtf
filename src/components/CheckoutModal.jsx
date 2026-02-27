@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { initiateCheckout } from '../api/checkout'
 
 const TIER_DATA = {
-  Monthly: { label: 'Monthly', suffix: '/mo', note: 'Billed monthly. Cancel anytime.' },
+  Monthly: { label: 'Monthly', suffix: '/mo', note: '30 days access. One-time payment. Does not auto-renew.' },
   Lifetime: { label: 'Lifetime', suffix: ' one-time', note: 'One-time payment. Permanent access.' },
 }
 
@@ -117,14 +117,30 @@ export default function CheckoutModal({ product, tier, price, onClose }) {
                 fontFamily: 'DM Mono, monospace',
                 fontSize: '10px',
                 fontWeight: 500,
-                color: '#0a0a0a',
-                background: '#e8e8e8',
+                color: tier === 'Lifetime' ? '#0a0a0a' : '#aaaaaa',
+                background: tier === 'Lifetime' ? '#e8e8e8' : 'transparent',
+                border: tier === 'Lifetime' ? 'none' : '1px solid #2a2a2a',
                 padding: '3px 8px',
                 letterSpacing: '0.08em',
               }}
             >
               {tierInfo.label.toUpperCase()}
             </span>
+            {tier === 'Lifetime' && (
+              <span
+                style={{
+                  fontFamily: 'DM Mono, monospace',
+                  fontSize: '9px',
+                  fontWeight: 500,
+                  color: '#c9a84c',
+                  border: '1px solid #c9a84c',
+                  padding: '3px 7px',
+                  letterSpacing: '0.08em',
+                }}
+              >
+                BEST VALUE
+              </span>
+            )}
           </div>
         </div>
 
