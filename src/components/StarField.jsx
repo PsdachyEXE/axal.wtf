@@ -32,14 +32,14 @@ export default function StarField() {
         })
       }
 
-      for (let i = 0; i < 28; i++) {
+      for (let i = 0; i < 38; i++) {
         drifters.push({
           x: Math.random() * w,
           y: Math.random() * h,
-          r: Math.random() * 1.2 + 0.5,
-          opacity: Math.random() * 0.2 + 0.04,
-          vy: Math.random() * 0.3 + 0.1,
-          vx: (Math.random() - 0.5) * 0.08,
+          r: Math.random() * 2.5 + 1.5,
+          opacity: Math.random() * 0.3 + 0.12,
+          vy: Math.random() * 0.4 + 0.25,
+          vx: (Math.random() - 0.5) * 0.04,
           phase: Math.random() * Math.PI * 2,
         })
       }
@@ -73,9 +73,9 @@ export default function StarField() {
 
       for (const d of drifters) {
         if (!reduced) {
-          d.phase += 0.008
+          d.phase += 0.005
           d.y += d.vy
-          d.x += Math.sin(d.phase) * 0.25 + d.vx
+          d.x += Math.sin(d.phase) * 0.4 + d.vx
           if (d.y > h + d.r) { d.y = -d.r; d.x = Math.random() * w }
           if (d.x > w + d.r) d.x = -d.r
           if (d.x < -d.r) d.x = w + d.r
