@@ -26,7 +26,7 @@
     position: relative;
   }
 
-  /* Noise texture overlay */
+  /* noise */
   body::before {
     content: '';
     position: fixed;
@@ -54,7 +54,7 @@
 }
 
 @layer components {
-  /* ── Nav ─────────────────────────────────────── */
+  /* nav */
   .nav-bar {
     position: fixed;
     top: 0; left: 0; right: 0;
@@ -120,7 +120,7 @@
     border-color: #e8e8e8;
   }
 
-  /* ── Hero ────────────────────────────────────── */
+  /* hero */
   .hero-overlay {
     position: absolute;
     inset: 0;
@@ -140,7 +140,7 @@
     z-index: 1;
   }
 
-  /* ── Buttons ─────────────────────────────────── */
+  /* buttons */
   .btn-primary {
     font-family: var(--font-mono);
     font-weight: 500;
@@ -172,7 +172,7 @@
     border-color: #e8e8e8;
   }
 
-  /* ── Forms ───────────────────────────────────── */
+  /* forms */
   .form-label {
     font-family: var(--font-mono);
     font-size: 10px;
@@ -200,7 +200,7 @@
     border-color: #555555;
   }
 
-  /* ── Cards ───────────────────────────────────── */
+  /* cards */
   .product-card {
     border: 1px solid #2a2a2a;
     padding: 32px;
@@ -213,7 +213,7 @@
     border-color: #555555;
   }
 
-  /* ── Section decorations ─────────────────────── */
+  /* labels */
   .label-comment {
     font-family: var(--font-mono);
     font-size: 12px;
@@ -237,7 +237,7 @@
     margin-top: 12px;
   }
 
-  /* ── Donation preset buttons ─────────────────── */
+  /* presets */
   .preset-btn {
     font-family: var(--font-mono);
     font-size: 12px;
@@ -260,7 +260,7 @@
     border-color: #e8e8e8;
   }
 
-  /* ── Modal ───────────────────────────────────── */
+  /* modal */
   .modal-close {
     position: absolute;
     top: 16px;
@@ -297,7 +297,7 @@
   }
 }
 
-/* Reduced motion: respect user OS preference */
+/* reduced motion */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -309,7 +309,7 @@
   }
 }
 
-/* Responsive: stack hero and donations grid on mobile */
+/* mobile */
 @media (max-width: 768px) {
   .hero-grid {
     grid-template-columns: 1fr !important;
